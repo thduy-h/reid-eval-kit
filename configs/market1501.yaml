@@ -1,0 +1,8 @@
+schema_version: 1
+evaluation:
+  protocol: market1501
+  distance: cosine
+  normalize_features: true
+  max_rank: 50
+  query_chunk_size: 128
+

@@ -1,0 +1,32 @@
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: {python-version: ['3.11', '3.12', '3.13']}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '${{ matrix.python-version }}'}
+      - run: python -m pip install '.[dev]'
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy src/
+      - run: python -m pytest -ra
+      - run: python -m build
+      - run: twine check dist/*
+      - name: Isolated wheel evaluation
+        shell: bash
+        run: |
+          python -m venv /tmp/reid-wheel
+          /tmp/reid-wheel/bin/python -m pip install dist/*.whl
+          cd /tmp
+          /tmp/reid-wheel/bin/python -I -c 'import reid_eval_kit'
+          /tmp/reid-wheel/bin/reideval --help
+          /tmp/reid-wheel/bin/python "$GITHUB_WORKSPACE/examples/generate_synthetic_data.py"
+          /tmp/reid-wheel/bin/reideval evaluate --query synthetic/query.npz --gallery synthetic/gallery.npz --protocol custom --output results

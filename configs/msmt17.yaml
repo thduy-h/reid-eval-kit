@@ -1,0 +1,7 @@
+schema_version: 1
+evaluation:
+  protocol: msmt17
+  distance: cosine
+  normalize_features: true
+  max_rank: 50
+
