@@ -49,8 +49,10 @@ from reid_eval_kit import ReIDEvaluator
 result = ReIDEvaluator(protocol="custom", distance="cosine").evaluate(
     query_features=np.array([[1.0, 0.0]]),
     gallery_features=np.array([[1.0, 0.0], [0.0, 1.0]]),
-    query_ids=np.array([1]), gallery_ids=np.array([1, 2]),
-    query_camids=np.array([0]), gallery_camids=np.array([1, 1]),
+    query_ids=np.array([1]),
+    gallery_ids=np.array([1, 2]),
+    query_camids=np.array([0]),
+    gallery_camids=np.array([1, 1]),
     query_sample_ids=np.array(["q0"]),
     gallery_sample_ids=np.array(["g0", "g1"]),
 )
